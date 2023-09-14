@@ -1,1 +1,1 @@
-# Integrated_digital_signal_processing_IP
+# GM Kim is in charge in this branch.
