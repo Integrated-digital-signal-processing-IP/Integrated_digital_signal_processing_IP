@@ -1,1 +1,1 @@
-# GM Kim is in charge in this branch.
+# GM Kim is in charge of this branch : images processing
