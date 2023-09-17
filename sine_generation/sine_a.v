@@ -1,32 +1,29 @@
 module sine_a
 (
+	input			rst		,
+	input			clk		,
+	input	[11:0]	delta	,
 
-input	wire			rst		,
-input	wire			clk		,
-input	wire	[11:0]	delta	,
-//----------------------
-output	wire	[11:0]	sind
+	output	[11:0]	sind
 );
 
-wire 		rstb	;
-reg [11:0]	addr	;
+	reg 	[11:0]	addr;
 
-always@(negedge rst, posedge clk)
-begin
-	if (rst == 0)
-		addr <= 0;
-	else
-		addr <= addr + delta;
-end
+	always@(posedge clk, negedge rst)
+	begin
+		if (!rst)
+			addr <= 12'b0;
+		else
+			addr <= addr + delta;
+	end
 
-assign rstb = ~ rst;
 
-usin_rom u_usin_rom
-(
-.rsta		( rstb		)	,
-.clka		( clk		)	,
-.addra		( addr 		)	,
-.douta		( sind		)
-);
+	usin_rom u_usin_rom
+	(
+	.rst		( rst		)	,
+	.clk		( clk		)	,
+	.addr		( addr 		)	,
+	.dout		( sind		)
+	);
 
 endmodule
