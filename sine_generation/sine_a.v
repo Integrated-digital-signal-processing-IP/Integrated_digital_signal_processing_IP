@@ -9,6 +9,7 @@ module sine_a
 
 	reg 	[11:0]	addr;
 
+	//calculate addr
 	always@(posedge clk, negedge rst)
 	begin
 		if (!rst)
@@ -17,13 +18,16 @@ module sine_a
 			addr <= addr + delta;
 	end
 
-
+	//unsigned sine wave pattern ROM instant
 	usin_rom u_usin_rom
 	(
-	.rst		( rst		)	,
-	.clk		( clk		)	,
-	.addr		( addr 		)	,
-	.dout		( sind		)
+		//input
+		.rst(rst)			,
+		.clk(clk)			,
+		.addr(addr)			,
+		
+		//output
+		.dout(sind)
 	);
 
 endmodule

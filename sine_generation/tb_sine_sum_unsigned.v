@@ -10,18 +10,21 @@ module tb_sine_sum_unsigned;
 
     wire    [12:0]  sind_sum;   
 
+    //sine sum unsigned module instant
     sine_sum_unsigned sine_sum_unsigned
     (
-        .rst(rst)       ,
-        .clk(clk)       ,
+        .rst(rst)           ,
+        .clk(clk)           ,
         .delta_a(delta_a)   ,
         .delta_b(delta_b)   ,
 
         .sind_sum(sind_sum)
     );
 
+    //clock generate
     always #25 clk = ~clk;
 
+    //set initial values
     initial begin
         rst = 1'b1;
         clk = 1'b0;
@@ -35,6 +38,7 @@ module tb_sine_sum_unsigned;
 
     end
 
+    //creat dump file
     initial begin
         $dumpfile("sine_sum_unsigned.vcd");
 		$dumpvars(0, tb_sine_sum_unsigned);

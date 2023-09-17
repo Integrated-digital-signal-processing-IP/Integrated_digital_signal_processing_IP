@@ -1,39 +1,51 @@
 module sine_sum_unsigned
 (
+	input			rst		,
+	input			clk		,
+	input	[11:0]	delta_a	, 
+	input	[11:0]	delta_b	,
 
-input			rst		,
-input			clk		,
-input	[11:0]	delta_a, delta_b	,
-//-----------------------
-output	reg [12:0]	sind_sum
+	output	[12:0]	sind_sum
 );
+	
+	reg		[12:0]	sind_sum_r;
+	wire 	[11:0]	sind_a;
+	wire	[11:0]	sind_b;
 
-wire [11:0]	sind_a, sind_b	;
+	//calculate sind_sum
+	always@(posedge clk, negedge rst)
+	begin
+		if (rst == 0)
+			sind_sum_r <= 0;
+		else
+			sind_sum_r <= sind_a + sind_b;
+	end
 
-always@(negedge rst, posedge clk)
-begin
-	if (rst == 0)
-		sind_sum <= 0;
-	else
-		sind_sum <= sind_a + sind_b;
-end
+	//sine wave1 instant
+	sine_a u_sine_a_0
+	(	
+		//input
+		.rst(rst)			,
+		.clk(clk)			,
+		.delta(delta_a)		,
 
-//assign rstb = ~ rst;
+		//output
+		.sind(sind_a)
+	);
 
-sine_a u_sine_a_0
-(
-.rst		( rst		)	,
-.clk		( clk		)	,
-.delta		( delta_a	)	,
-.sind		( sind_a	)
-);
+	//sine wave2 instant
+	sine_a u_sine_a_1
+	(	
+		//input
+		.rst(rst)			,
+		.clk(clk)			,
+		.delta(delta_b)		,
 
-sine_a u_sine_a_1
-(
-.rst		( rst		)	,
-.clk		( clk		)	,
-.delta		( delta_b	)	,
-.sind		( sind_b	)
-);
+		//output
+		.sind(sind_b)
+	);
+
+	//wire output
+	assign sind_sum = sind_sum_r;
 
 endmodule
