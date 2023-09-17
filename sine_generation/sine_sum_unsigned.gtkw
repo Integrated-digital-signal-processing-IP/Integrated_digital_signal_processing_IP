@@ -1,0 +1,27 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sun Sep 17 13:14:53 2023
+[*]
+[dumpfile] "/home/hyundo/verilog/DSP/Lab File/Lab1/sine_sum_unsigned.vcd"
+[dumpfile_mtime] "Fri Sep 15 08:53:38 2023"
+[dumpfile_size] 9856043
+[savefile] "/home/hyundo/verilog/DSP/Lab File/Lab1/sine_sum_unsigned.gtkw"
+[timestart] 0
+[size] 1536 801
+[pos] -139 -139
+*-27.653685 205025000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 214
+[signals_width] 184
+[sst_expanded] 1
+[sst_vpaned_height] 222
+@10025
+tb_sine_sum_unsigned.sind_sum[12:0]
+@20000
+-
+-
+-
+-
+-
+-
+[pattern_trace] 1
+[pattern_trace] 0
