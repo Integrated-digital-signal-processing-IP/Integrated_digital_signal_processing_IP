@@ -6,7 +6,9 @@ module usin_rom
 
 	output	[11:0]	dout
 );
-		
+	
+	reg		[11:0]	dout_r;
+	
 	always@ (posedge clk, negedge rst) begin
 		if (!rst)
 			dout_r <= 0;

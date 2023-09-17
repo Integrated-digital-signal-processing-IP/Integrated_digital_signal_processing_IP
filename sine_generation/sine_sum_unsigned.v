@@ -15,7 +15,7 @@ module sine_sum_unsigned
 	//calculate sind_sum
 	always@(posedge clk, negedge rst)
 	begin
-		if (rst == 0)
+		if (!rst)
 			sind_sum_r <= 0;
 		else
 			sind_sum_r <= sind_a + sind_b;
