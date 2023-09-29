@@ -3,12 +3,13 @@ module addr11_gen
     input           clk     ,
     input           s_clk   ,
     input           rst     ,
+	input			en		,
     input   [19:0]  f_set   ,
 
     output  [10:0]  addr      
 );
 
-    reg		[10:0]	addro_r;
+    reg		[10:0]	addr_r;
 	reg	 			pl0;
 	reg				pl1;
 	reg  	[28:0]	cnt_bas;
@@ -38,10 +39,12 @@ module addr11_gen
 			cnt_bas <= 0;
 		end
 		else if ((pl0 & ~pl1) == 1) begin
-			if (cnt_df < 29'd160000000)
-				cnt_bas <= cnt_df;
-			else
-				cnt_bas <= cnt_df - 29'd160000000;
+			if (en) begin
+				if (cnt_df < 29'd160000000)
+					cnt_bas <= cnt_df;
+				else
+					cnt_bas <= cnt_df - 29'd160000000;
+			end
 		end
 	end
 
@@ -49,11 +52,14 @@ module addr11_gen
 
 	always @ (posedge clk, negedge rst) begin
 		if (!rst)
-			addro_r <= 11'd0;
-		else if ((pl0 & ~pl1) == 1'b1)			//rising clock
-			addro_r <= cnt_in[10:0];
+			addr_r <= 11'd0;
+		else if ((pl0 & ~pl1) == 1'b1) begin		//rising clock
+			if (en) begin
+				addr_r <= cnt_in[10:0];
+			end
+		end
 	end
 
-	assign addro = addro_r;
+	assign addr = addr_r;
 
 endmodule

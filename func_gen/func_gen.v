@@ -1,13 +1,13 @@
 module func_gen
 (
     input                   clk         ,
-    input                   rst         ,
     input                   s_clk       ,   // Sampling clock frequency : 2MHz 
+    input                   rst         ,
 
     input           [19:0]  f_set       ,   // 1 ~ 1MHz
-    input           [19:0]  f_s_set     ,   // sin wave frequency
-    input           [19:0]  f_c_set     ,   // cos wave frequency
-    input           [2:0]   w_set       ,   // wave type : sin, cos, sin+sin, sin+cos, cos+cos
+    //input           [19:0]  f_s_set     ,   // sin wave frequency
+    //input           [19:0]  f_c_set     ,   // cos wave frequency
+    input                   w_set       ,   // wave type : sin, cos (sin+sin, sin+cos, cos+cos)
     input                   a_set       ,   // amplitude : 1V, 2V 
 
     output  signed  [11:0]  wave        
@@ -18,9 +18,9 @@ module func_gen
     /* ------------------------------------ */
     /*    000    |            sin           */
     /*    001    |            cos           */
-    /*    010    |         sin + sin        */
-    /*    011    |         sin + cos        */    
-    /*    100    |         cos + cos        */        
+    /*  x 010    |         sin + sin        */
+    /*  x 011    |         sin + cos        */    
+    /*  x 100    |         cos + cos        */        
     /****************************************/    
 
     /****************************************/
@@ -34,21 +34,32 @@ module func_gen
     wire            [10:0]  addr11_w;
     wire    signed  [11:0]  addr12_w_i;
     wire    signed  [10:0]  addr11_w_i;
-    wire            [19:0]  freq_11_w;
-    wire            [19:0]  freq_12_w;
-    wire                    usin11_rom_en;
-    wire                    usin12_rom_en;
-    wire            [11:0]  1V_wave;
-    wire            [11:0]  2V_wave;
+    //wire            [19:0]  freq_11_w;
+    //wire            [19:0]  freq_12_w;
+    wire                    addr11_gen_en;
+    wire                    addr12_gen_en;
+
+    //wire            [11:0]  c_addr12;
+    //wire            [10:0]  c_addr11;
+    wire            [11:0]  wave_1V;
+    wire            [11:0]  wave_2V;
    
+    // Make cos wave address
+    //assign  c_addr12 = addr12_w + 12'd1024;
+    //assign  c_addr11 = addr11_w + 11'd512;
+
+    // Make final wave address
+    assign  addr11_w_i = w_set ? (addr11_w + 11'd512) : addr11_w;
+    assign  addr12_w_i = w_set ? (addr12_w + 12'd1024) : addr12_w;
 
     // Set sine pattern ROM enable singal (11bit, 12bit)
-    assign  usin11_rom_en = a_set ? 1'b0 : 1'b1;
-    assign  usin12_rom_en = a_set ? 1'b1 : 1'b0;
+    assign  addr11_gen_en = a_set ? 1'b0 : 1'b1;
+    assign  addr12_gen_en = a_set ? 1'b1 : 1'b0;
 
     // Set output wave 
-    assign wave = a_set ? (2V_wave - 12'd2048) : (1V_wave - 11'd1024);
+    assign  wave = a_set ? (wave_2V - 12'd2048) : (wave_1V - 11'd1024);
 
+/*
     always @ (*) begin
         case (w_set)
             3'b000  :  begin 
@@ -61,6 +72,7 @@ module func_gen
             default : 
         endcase
     end
+*/
 
     // 11bit Address generator (1V, 0~2047)
     addr11_gen addr11_gen
@@ -69,6 +81,7 @@ module func_gen
         .clk(clk)                       ,
         .s_clk(s_clk)                   ,
         .rst(rst)                       ,
+        .en(addr11_gen_en)              ,
         .f_set(f_set)                   ,
 
         //OUTPUT
@@ -82,6 +95,7 @@ module func_gen
         .clk(clk)                       ,
         .s_clk(s_clk)                   ,
         .rst(rst)                       ,
+        .en(addr12_gen_en)              ,
         .f_set(f_set)                   ,
 
         //OUTPUT
@@ -94,23 +108,22 @@ module func_gen
         //INPUT
         .clk(clk)                       ,
         .rst(rst)                       ,
-        .en(usin11_rom_en)              ,
-        .addr(addr11_w)                 ,  
+        .addr(addr11_w_i)               ,  
 
         //OUTPUT
-        .dout(1V_wave)
+        .dout(wave_1V)
     );
 
     // 12bit Sine pattern ROM 
-    usin11_rom usin11_rom
+    usin12_rom usin12_rom
     (   
         //INPUT
         .clk(clk)                       ,
         .rst(rst)                       ,
-        .en(usin12_rom_en)              ,
-        .addr(addr12_w)                 ,         
+        .addr(addr12_w_i)               ,         
 
         //OUTPUT
-        .dout(2V_wave)
+        .dout(wave_2V)
     );
+
 endmodule

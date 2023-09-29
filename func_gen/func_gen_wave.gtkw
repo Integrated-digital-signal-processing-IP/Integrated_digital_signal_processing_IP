@@ -1,0 +1,51 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Sep 29 12:55:55 2023
+[*]
+[dumpfile] "/home/hyundo/Github/Signal_processing_accelerator/func_gen/func_gen.vcd"
+[dumpfile_mtime] "Fri Sep 29 12:55:38 2023"
+[dumpfile_size] 697272
+[savefile] "/home/hyundo/Github/Signal_processing_accelerator/func_gen/func_gen_wave.gtkw"
+[timestart] 0
+[size] 1536 801
+[pos] -1 -1
+*-14.222844 99544 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_func_gen.
+[treeopen] tb_func_gen.func_gen.
+[sst_width] 214
+[signals_width] 224
+[sst_expanded] 1
+[sst_vpaned_height] 222
+@200
+-
+-INPUT
+@28
+tb_func_gen.clk
+tb_func_gen.s_clk
+tb_func_gen.rst
+@24
+tb_func_gen.f_set[19:0]
+@28
+tb_func_gen.w_set
+tb_func_gen.a_set
+@200
+-
+-Control Signal
+@28
+tb_func_gen.func_gen.addr11_gen_en
+tb_func_gen.func_gen.addr12_gen_en
+@22
+tb_func_gen.func_gen.addr11_w[10:0]
+tb_func_gen.func_gen.addr12_w[11:0]
+@200
+-
+-OUTPUT
+@10421
+tb_func_gen.wave[11:0]
+@20000
+-
+-
+-
+-
+[pattern_trace] 1
+[pattern_trace] 0
