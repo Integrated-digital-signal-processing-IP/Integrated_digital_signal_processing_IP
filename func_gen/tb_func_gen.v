@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 module tb_func_gen;
 
     localparam SIM_TIME = 100000;

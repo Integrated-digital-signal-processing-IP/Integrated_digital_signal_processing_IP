@@ -9,9 +9,9 @@ module addr12_gen
     output  [11:0]  addr      
 );
 
-    reg		[11:0]	addr_r;
 	reg	 			pl0;
 	reg				pl1;
+    reg		[11:0]	addr_r;
 	reg  	[28:0]	cnt_bas;
 	wire 	[28:0]	cnt_in;
 	wire 	[28:0]	cnt_df;
