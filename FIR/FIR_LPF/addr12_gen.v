@@ -1,4 +1,4 @@
-module addr_gen
+module addr12_gen
 (
     input           clk     ,
     input           s_clk   ,
