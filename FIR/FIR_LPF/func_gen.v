@@ -4,7 +4,7 @@ module func_gen
     input                   s_clk       ,   // Sampling clock frequency : 2MHz 
     input                   rst         ,
 
-    input           [19:0]  f_set       ,   // 1 ~ 1MHz
+    input           [18:0]  f_set       ,   // 1 ~ 50KHz
     //input           [19:0]  f_s_set     ,   // sin wave frequency
     //input           [19:0]  f_c_set     ,   // cos wave frequency
     input                   w_set       ,   // wave type : sin, cos (sin+sin, sin+cos, cos+cos)

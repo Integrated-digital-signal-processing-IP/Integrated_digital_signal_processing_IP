@@ -4,7 +4,7 @@ module addr11_gen
     input           s_clk   ,
     input           rst     ,
 	input			en		,
-    input   [19:0]  f_set   ,
+    input   [18:0]  f_set   ,
 
     output  [10:0]  addr      
 );
@@ -12,13 +12,13 @@ module addr11_gen
 	reg	 			pl0;
 	reg				pl1;
     reg		[10:0]	addr_r;
-	reg  	[28:0]	cnt_bas;
-	wire 	[28:0]	cnt_in;
-	wire 	[28:0]	cnt_df;
+	reg  	[24:0]	cnt_bas;
+	wire 	[24:0]	cnt_in;
+	wire 	[24:0]	cnt_df;
 
 	wire 	[23:0]	f_din;
 
-	assign f_din = f_set * 8;		// 1 ~ 1MHz
+	assign f_din = f_set * 32;		// 1 ~ 50KHz
 
 	//two registers to detect rsing clock
 	always @ (posedge clk, negedge rst) begin
@@ -40,15 +40,15 @@ module addr11_gen
 		end
 		else if ((pl0 & ~pl1) == 1) begin
 			if (en) begin
-				if (cnt_df < 29'd160000000)
+				if (cnt_df < 25'd32000000)
 					cnt_bas <= cnt_df;
 				else
-					cnt_bas <= cnt_df - 29'd160000000;
+					cnt_bas <= cnt_df - 25'd32000000;
 			end
 		end
 	end
 
-	assign cnt_in = (cnt_bas / 29'd78125);
+	assign cnt_in = (cnt_bas / 25'd15625);
 
 	always @ (posedge clk, negedge rst) begin
 		if (!rst)

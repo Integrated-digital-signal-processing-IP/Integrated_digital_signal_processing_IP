@@ -1,4 +1,4 @@
-module usin_rom
+module usin12_rom
 (
 	input			clk		,
 	input			rst 	,
