@@ -1,17 +1,17 @@
 `timescale 1ns/1ps
 module tb_func_gen;
 
-    localparam SIM_TIME = 100000;
+    localparam SIM_TIME = 3000000;
 
     reg                     clk;
     reg                     s_clk;
     reg                     rst;
 
-    reg             [19:0]  f_set;
+    reg             [18:0]  f_set;
     reg                     w_set;
-    reg                     a_set;
+    reg             [2:0]   a_set;
 
-    wire    signed  [11:0]  wave;
+    wire    signed  [15:0]  wave;
 
     // function generator instant
     func_gen func_gen
@@ -30,8 +30,8 @@ module tb_func_gen;
     );
 
     // clock generate
-    always #5 clk = ~clk;           // 100MHz
-    always #25 s_clk = ~s_clk;      // 20MHz
+    always #50 clk = ~clk;          //  10MHz
+    always #500 s_clk = ~s_clk;     //  1MHz
 
     //set initial values
     initial begin
@@ -39,19 +39,39 @@ module tb_func_gen;
         s_clk = 1'b0;
         rst = 1'b1;
         
-        f_set = 20'd100000;         // 100KHz
+        f_set = 19'd10000;          // 100KHz
         w_set = 1'b0;               // sine wave
-        a_set = 1'b1;               // 2V (0~4095)     
+        a_set = 3'd0;               // 2V (0~4095)     
 
         #10
         rst = 1'b0;
         #10
         rst = 1'b1;
 
-        #50000;
-        f_set = 20'd1000000;        // 1MHz
+        #500000;
+        f_set = 19'd48000;          // 50MHz
         w_set = 1'b1;               // cos wave
-        a_set = 1'b0;               // 1V (0~4095)     
+        a_set = 3'd1;               // 1V (0~4095)     
+
+        #500000;
+        f_set = 19'd48000;          // 50MHz
+        w_set = 1'b1;               // cos wave
+        a_set = 3'd2;               // 1V (0~4095)   
+
+        #500000;
+        f_set = 19'd48000;          // 50MHz
+        w_set = 1'b1;               // cos wave
+        a_set = 3'd3;               // 1V (0~4095)   
+
+        #500000;
+        f_set = 19'd48000;          // 50MHz
+        w_set = 1'b1;               // cos wave
+        a_set = 3'd4;               // 1V (0~4095)  
+
+        #500000;
+        f_set = 19'd48000;          // 50MHz
+        w_set = 1'b1;               // cos wave
+        a_set = 3'd5;               // 1V (0~4095)  
     end
 
     //creat dump file

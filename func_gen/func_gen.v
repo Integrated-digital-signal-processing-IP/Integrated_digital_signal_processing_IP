@@ -4,111 +4,86 @@ module func_gen
     input                   s_clk       ,   // Sampling clock frequency : 2MHz 
     input                   rst         ,
 
-    input           [19:0]  f_set       ,   // 1 ~ 1MHz
+    input           [18:0]  f_set       ,   // 1 ~ 50KHz
     //input           [19:0]  f_s_set     ,   // sin wave frequency
     //input           [19:0]  f_c_set     ,   // cos wave frequency
     input                   w_set       ,   // wave type : sin, cos (sin+sin, sin+cos, cos+cos)
-    input                   a_set       ,   // amplitude : 1V, 2V 
+    input           [2:0]   a_set       ,   // amplitude : 1V, 2V 
 
-    output  signed  [11:0]  wave        
+    output  signed  [15:0]  wave        
 );
 
     /****************************************/
     /*   w_set   |         wave type        */
     /* ------------------------------------ */
-    /*    000    |            sin           */
-    /*    001    |            cos           */
-    /*  x 010    |         sin + sin        */
-    /*  x 011    |         sin + cos        */    
-    /*  x 100    |         cos + cos        */        
+    /*     0     |            sin           */
+    /*     1     |            cos           */      
     /****************************************/    
 
     /****************************************/
     /*   a_set   |         Amplitude        */
     /* ------------------------------------ */
-    /*     0     |             1V           */
-    /*     1     |             2V           */
+    /*    000    |             1V           */
+    /*    001    |             2V           */
+    /*    010    |             4V           */
+    /*    011    |             6V           */
+    /*    100    |             8V           */
+    /*    101    |             10V          */
     /****************************************/
 
-    wire            [11:0]  addr12_w;
-    wire            [10:0]  addr11_w;
-    wire    signed  [11:0]  addr12_w_i;
-    wire    signed  [10:0]  addr11_w_i;
-    //wire            [19:0]  freq_11_w;
-    //wire            [19:0]  freq_12_w;
-    wire                    addr11_gen_en;
-    wire                    addr12_gen_en;
+    wire            [11:0]  addr_w;
+    wire    signed  [11:0]  addr_w_i;
 
-    //wire            [11:0]  c_addr12;
-    //wire            [10:0]  c_addr11;
-    wire            [11:0]  wave_1V;
-    wire            [11:0]  wave_2V;
-   
-    // Make cos wave address
-    //assign  c_addr12 = addr12_w + 12'd1024;
-    //assign  c_addr11 = addr11_w + 11'd512;
+    wire            [11:0]  uwave_w;
+    wire    signed  [11:0]  swave_w;
+    reg     signed  [15:0]  wave_r;
+
 
     // Make final wave address
-    assign  addr11_w_i = w_set ? (addr11_w + 11'd512) : addr11_w;
-    assign  addr12_w_i = w_set ? (addr12_w + 12'd1024) : addr12_w;
+    assign  addr_w_i = w_set ? (addr_w + 12'd1024) : addr_w;
+    assign  swave_w = uwave_w - 12'd2048;
 
-    // Set sine pattern ROM enable singal (11bit, 12bit)
-    assign  addr11_gen_en = a_set ? 1'b0 : 1'b1;
-    assign  addr12_gen_en = a_set ? 1'b1 : 1'b0;
+    // Set amplitude of wave by a_set
+    always @ (*) begin
 
-    // Set output wave 
-    assign  wave = a_set ? (wave_2V - 12'd2048) : (wave_1V - 11'd1024);
+        wave_r = 16'd0;
 
-    // 11bit Address generator (1V, 0~2047)
-    addr11_gen addr11_gen
-    (   
-        //INPUT
-        .clk(clk)                       ,
-        .s_clk(s_clk)                   ,
-        .rst(rst)                       ,
-        .en(addr11_gen_en)              ,
-        .f_set(f_set)                   ,
-
-        //OUTPUT
-        .addr(addr11_w)                     
-    );
+        case(a_set)
+            3'b000  : wave_r = swave_w / 2;
+            3'b001  : wave_r = swave_w;
+            3'b010  : wave_r = swave_w * 2;
+            3'b011  : wave_r = swave_w * 3;
+            3'b100  : wave_r = swave_w * 4;
+            3'b101  : wave_r = swave_w * 5;
+            default : wave_r = 16'd0;
+        endcase
+    end
 
     // 12bit Address generator (2V, 0~4095)
-    addr12_gen addr12_gen
+    addr_gen addr_gen
     (
         //INPUT
         .clk(clk)                       ,
         .s_clk(s_clk)                   ,
         .rst(rst)                       ,
-        .en(addr12_gen_en)              ,
         .f_set(f_set)                   ,
 
         //OUTPUT
-        .addr(addr12_w)   
-    );
-
-    // 11bit Sine pattern ROM 
-    usin11_rom usin11_rom
-    (   
-        //INPUT
-        .clk(clk)                       ,
-        .rst(rst)                       ,
-        .addr(addr11_w_i)               ,  
-
-        //OUTPUT
-        .dout(wave_1V)
+        .addr(addr_w)   
     );
 
     // 12bit Sine pattern ROM 
-    usin12_rom usin12_rom
+    usin_rom usin_rom
     (   
         //INPUT
         .clk(clk)                       ,
         .rst(rst)                       ,
-        .addr(addr12_w_i)               ,         
+        .addr(addr_w_i)                 ,         
 
         //OUTPUT
-        .dout(wave_2V)
+        .dout(uwave_w)
     );
+
+    assign wave = wave_r;
 
 endmodule
