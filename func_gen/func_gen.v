@@ -10,7 +10,7 @@ module func_gen
     input                   w_set       ,   // wave type : sin, cos (sin+sin, sin+cos, cos+cos)
     input           [2:0]   a_set       ,   // amplitude : 1V, 2V 
 
-    output  signed  [15:0]  wave        
+    output  signed  [11:0]  wave        
 );
 
     /****************************************/
@@ -26,9 +26,9 @@ module func_gen
     /*    000    |             1V           */
     /*    001    |             2V           */
     /*    010    |             4V           */
-    /*    011    |             6V           */
-    /*    100    |             8V           */
-    /*    101    |             10V          */
+    /*    011    |             5V           */
+    /*    100    |             10V          */
+    /*    101    |             20V          */
     /****************************************/
 
     wire            [11:0]  addr_w;
@@ -36,7 +36,7 @@ module func_gen
 
     wire            [11:0]  uwave_w;
     wire    signed  [11:0]  swave_w;
-    reg     signed  [15:0]  wave_r;
+    reg     signed  [11:0]  wave_r;
 
 
     // Make final wave address
@@ -46,16 +46,16 @@ module func_gen
     // Set amplitude of wave by a_set
     always @ (*) begin
 
-        wave_r = 16'd0;
+        wave_r = 12'd0;
 
         case(a_set)
-            3'b000  : wave_r = swave_w / 2;
-            3'b001  : wave_r = swave_w;
-            3'b010  : wave_r = swave_w * 2;
-            3'b011  : wave_r = swave_w * 3;
-            3'b100  : wave_r = swave_w * 4;
-            3'b101  : wave_r = swave_w * 5;
-            default : wave_r = 16'd0;
+            3'b000  : wave_r = swave_w / 20;    // 1V
+            3'b001  : wave_r = swave_w / 10;    // 2V
+            3'b010  : wave_r = swave_w / 5;     // 4V
+            3'b011  : wave_r = swave_w / 4;     // 5V
+            3'b100  : wave_r = swave_w / 2;     // 10V
+            3'b101  : wave_r = swave_w;         // 20V
+            default : wave_r = 12'd0;
         endcase
     end
 
