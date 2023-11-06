@@ -1,0 +1,28 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Mon Nov  6 18:18:24 2023
+[*]
+[dumpfile] "/home/hyundo/Github/Signal_processing_accelerator/FILTER/FIR/FIR_HPF/FIR_HPF.vcd"
+[dumpfile_mtime] "Mon Nov  6 18:16:57 2023"
+[dumpfile_size] 22564022
+[savefile] "/home/hyundo/Github/Signal_processing_accelerator/FILTER/FIR/FIR_HPF/fir_hpf.gtkw"
+[timestart] 0
+[size] 1536 801
+[pos] -1 -1
+*-32.007229 12620000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 214
+[signals_width] 158
+[sst_expanded] 1
+[sst_vpaned_height] 326
+@10420
+tb_FIR_HPF.di_fir[11:0]
+@20000
+-
+-
+-
+@10420
+tb_FIR_HPF.do_fir_lpf[11:0]
+@20000
+-
+[pattern_trace] 1
+[pattern_trace] 0
