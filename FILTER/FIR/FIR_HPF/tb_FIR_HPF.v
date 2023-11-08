@@ -28,8 +28,8 @@ module tb_FIR_HPF;
     wire    signed	[12:0]	sum_wave;   // swave_a + swave_b
     wire    signed  [13:0]  sub_wave;
 
-    wire	        [11:0]	di_fir;     // FIR LPF input
-    wire	        [11:0]	do_fir_lpf; // FIR LPF output
+    wire	signed  [11:0]	di_fir;     // FIR LPF input
+    wire	signed  [11:0]	do_fir_lpf; // FIR LPF output
 
 
     // Function generator A instant

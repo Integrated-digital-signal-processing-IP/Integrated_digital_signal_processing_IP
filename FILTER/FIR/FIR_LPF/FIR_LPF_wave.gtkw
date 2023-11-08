@@ -1,32 +1,30 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Mon Nov  6 18:14:18 2023
+[*] Wed Nov  8 20:30:53 2023
 [*]
 [dumpfile] "/home/hyundo/Github/Signal_processing_accelerator/FILTER/FIR/FIR_LPF/FIR_LPF.vcd"
-[dumpfile_mtime] "Mon Nov  6 18:13:56 2023"
+[dumpfile_mtime] "Wed Nov  8 20:30:36 2023"
 [dumpfile_size] 22366036
 [savefile] "/home/hyundo/Github/Signal_processing_accelerator/FILTER/FIR/FIR_LPF/FIR_LPF_wave.gtkw"
 [timestart] 0
-[size] 1536 801
-[pos] -1 -1
-*-32.329159 7576500000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[size] 1000 584
+[pos] -155 -3
+*-33.073605 7576500000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [sst_width] 214
 [signals_width] 199
 [sst_expanded] 1
-[sst_vpaned_height] 326
+[sst_vpaned_height] 273
 @10420
 tb_FIR_LPF.di_fir[11:0]
 @20000
 -
 -
 -
-@10420
+@10421
 tb_FIR_LPF.do_fir_lpf[11:0]
 @20000
 -
-@20001
 -
-@20000
 -
 [pattern_trace] 1
 [pattern_trace] 0

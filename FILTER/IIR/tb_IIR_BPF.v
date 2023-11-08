@@ -17,9 +17,8 @@ module tb_IIR_BPF;
     wire	        [11:0]	uwave_a;    // func_gen_a output wave (unsigned)
     wire    signed	[11:0]	swave_a;    // signed wave_a
 
-    reg	            [15:0]	di_iir;     // FIR LPF input
-    wire	        [15:0]	do_iir_bpf; // FIR LPF output
-
+    reg	    signed  [15:0]	di_iir;     // FIR LPF input
+    wire	signed  [15:0]	do_iir_bpf; // FIR LPF output
 
     // Function generator A instant
     func_gen func_gen_a
@@ -49,11 +48,10 @@ module tb_IIR_BPF;
         .dout(do_iir_bpf)
     );
     
-    
     // Clock generate
     always #250     clk = ~clk;           // 100MHz
-    always #1000    s_clk = ~s_clk;       // 1MHz
-    always #12500   f_s = ~f_s;             // 20kHz
+    always #500     s_clk = ~s_clk;       // 1MHz
+    always #12500   f_s = ~f_s;           // 40kHz
 
     always @ (posedge clk, negedge rst) begin
         if (rst == 0) begin

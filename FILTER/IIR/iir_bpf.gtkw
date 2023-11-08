@@ -1,23 +1,30 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Tue Nov  7 19:48:59 2023
+[*] Wed Nov  8 20:27:54 2023
 [*]
 [dumpfile] "/home/hyundo/Github/Signal_processing_accelerator/FILTER/IIR/IIR_BPF.vcd"
-[dumpfile_mtime] "Tue Nov  7 19:48:17 2023"
-[dumpfile_size] 6158551
+[dumpfile_mtime] "Wed Nov  8 20:26:32 2023"
+[dumpfile_size] 90743033
 [savefile] "/home/hyundo/Github/Signal_processing_accelerator/FILTER/IIR/iir_bpf.gtkw"
-[timestart] 0
-[size] 1000 600
+[timestart] 56700000000
+[size] 1536 801
 [pos] -1 -1
-*-32.956245 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-34.329159 93300000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [sst_width] 214
-[signals_width] 158
+[signals_width] 220
 [sst_expanded] 1
-[sst_vpaned_height] 151
-@24
-tb_IIR_BPF.f_set_a[18:0]
+[sst_vpaned_height] 222
 @10420
 tb_IIR_BPF.di_iir[15:0]
+@20000
+-
+-
+@10420
 tb_IIR_BPF.do_iir_bpf[15:0]
+@20000
+-
+-
+@10421
+tb_IIR_BPF.bit12_out[11:0]
 [pattern_trace] 1
 [pattern_trace] 0

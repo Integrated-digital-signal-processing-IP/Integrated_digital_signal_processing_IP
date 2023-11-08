@@ -28,8 +28,8 @@ module tb_FIR_LPF;
     wire    signed	[12:0]	sum_wave;   // swave_a + swave_b
     wire    signed  [13:0]  sub_wave;
 
-    wire	        [11:0]	di_fir;     // FIR LPF input
-    wire	        [11:0]	do_fir_lpf; // FIR LPF output
+    wire	signed  [11:0]	di_fir;     // FIR LPF input
+    wire	signed  [11:0]	do_fir_lpf; // FIR LPF output
 
 
     // Function generator A instant
@@ -99,7 +99,6 @@ module tb_FIR_LPF;
         .dout(do_fir_lpf)
     );
     
-    
     // Clock generate
     always #250     clk = ~clk;           // 100MHz
     always #500     s_clk = ~s_clk;       // 1MHz
@@ -118,9 +117,9 @@ module tb_FIR_LPF;
         w_set_a = 1'b0;         // sin
         w_set_b = 1'b0;         // sin
         w_set_c = 1'b1;         // cos
-        a_set_a = 3'd2;         // 4V   
-        a_set_b = 3'd3;         // 5V
-        a_set_c = 3'd4;         // 10V
+        a_set_a = 3'd5;         // 4V   
+        a_set_b = 3'd5;         // 5V
+        a_set_c = 3'd5;         // 10V
         sel = 2'd0;
 
         #10
