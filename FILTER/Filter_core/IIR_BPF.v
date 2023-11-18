@@ -1,11 +1,10 @@
 module IIR_BPF
 (
-    input	                clk		,		// 10MHz
-    input	                rst		,
-    input					en		,
-    input	                f_s		,		// 40kHz
-    input	signed	[15:0]	din	   	,
-
+    input	                clk			,		// 10MHz
+    input	                f_s		    ,		// 40kHz
+    input                   en          ,
+    input	                rst			,
+    input	signed	[15:0]	din	   	    ,
     output  signed	[15:0]	dout   
 );
 
@@ -39,7 +38,7 @@ module IIR_BPF
     /*----- 	Data Output Set 	-----*/  
 
     always @ (posedge clk, negedge rst) begin
-        if (!rst)
+        if (rst == 0)
             dout_r <= 0;
         else if (pls0 & ~pls1)
             dout_r <= do_adj[19:4];
@@ -53,19 +52,19 @@ module IIR_BPF
     assign dod = do[19:9];
 
     always @ (posedge clk, negedge rst) begin
-        if (!rst)begin
-            do <= 0;
-        end
-        else if (pls1 & ~pls0) begin
-            if (en) begin
+        if (rst == 0)
+            begin
+                do <= 0;
+            end
+        else if (pls1 & ~pls0)
+            begin
                 if ((mb_sum[58:36] == 0) | (mb_sum[58:36] == 23'h7fffff))
                     do <= mb_sum[36:17];
                 else if (mb_sum[58] == 0)
                     do <= 20'h7ffff;
                 else
                     do <= 20'h80000;
-            end	
-        end	
+            end		
     end				
 
     assign dout = dout_r;
@@ -90,7 +89,7 @@ module IIR_BPF
     assign ma_sum = (cma4 + cma2) - (cma1 + cma3);
 
     always @ (posedge clk, negedge rst) begin
-        if (!rst)
+        if (rst == 0)
             dma_sum <= 0;
         else if ((ma_sum[66:59] == 0) | (ma_sum[66:59] == 8'hff))
             dma_sum <= ma_sum[59:20];
@@ -101,7 +100,7 @@ module IIR_BPF
     end				
 
     always @ (posedge clk, negedge rst) begin
-        if (!rst)
+        if (rst == 0)
             sum_a <= 0;
         else if (pls0 & ~pls1)
             sum_a <= din - dma_sum;
@@ -115,12 +114,14 @@ module IIR_BPF
             sr1 <= 0;
             sr2 <= 0;
             sr3 <= 0;
-        end
+        end 
         else if (pls1 & ~pls0) begin
-            sr0 <= sum_a;
-            sr1 <= sr0;
-            sr2 <= sr1;
-            sr3 <= sr2;
+            if (en) begin
+                sr0 <= sum_a;
+                sr1 <= sr0;
+                sr2 <= sr1;
+                sr3 <= sr2;
+            end
         end
     end				
 
@@ -140,10 +141,11 @@ module IIR_BPF
     /*----- 	Series of D-F/F  	-----*/  
 
     always @ (posedge clk, negedge rst) begin
-        if (!rst) begin
+        if (rst == 0) begin
             pls0 <= 0;
             pls1 <= 0;
-        end else begin
+        end
+        else begin
             pls0 <= f_s;
             pls1 <= pls0;
         end	

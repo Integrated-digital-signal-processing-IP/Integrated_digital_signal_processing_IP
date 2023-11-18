@@ -6,9 +6,11 @@ module tb_IIR_BPF;
     reg                     pl0, pl1;
 
     reg                     clk;        // clock
+    reg                     clk_1;
     reg	                    rst;        // asynchonus reset
     reg                     s_clk;      // func_gen sampling clock
     reg                     f_s;        // Low pass filter sampling clock
+    wire                    f_s_1;
 
     reg             [18:0]  f_set_a;    // wave_a freq
     reg                     w_set_a;    // wave_a type (sin or cos)
@@ -41,14 +43,23 @@ module tb_IIR_BPF;
         //INPUT 
         .clk(clk)               ,
         .rst(rst)               ,
-        .f_s(f_s)               ,
+        .f_s(f_s_1)               ,
         .din(di_iir)            ,
 
         // OUTPUT
         .dout(do_iir_bpf)
     );
     
+    clk_40k_gen clk_40k_gen
+    (
+        .clk(clk_1)             ,
+        .rst(rst)               ,
+
+        .clk_40k(f_s_1)       
+    );
+
     // Clock generate
+    always #50     clk_1 = ~clk_1;           // 100MHz
     always #250     clk = ~clk;           // 100MHz
     always #500     s_clk = ~s_clk;       // 1MHz
     always #12500   f_s = ~f_s;           // 40kHz
@@ -75,6 +86,7 @@ module tb_IIR_BPF;
     initial begin
         rst = 1'b1;
         clk = 1'b0;
+        clk_1 = 1'b0;
         s_clk = 1'b0;
         f_s = 1'b0;
         

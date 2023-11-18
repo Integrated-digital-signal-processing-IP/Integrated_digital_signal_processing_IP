@@ -49,8 +49,8 @@ module FIR_LPF
 			SR24 <= 0;	SR25 <= 0;	SR26 <= 0;	SR27 <= 0;
 			SR28 <= 0;	SR29 <= 0;	SR30 <= 0;	SR31 <= 0;
         end
-        else if (en) begin
-			if (pl0 & ~pl1) begin
+        else if (pl0 & ~pl1) begin
+			if (en) begin
 				SR00 <= din;	SR01 <= SR00;	SR02 <= SR01;	SR03 <= SR02;	
 				SR04 <= SR03;	SR05 <= SR04;	SR06 <= SR05;	SR07 <= SR06;	
 				SR08 <= SR07;	SR09 <= SR08;	SR10 <= SR09;	SR11 <= SR10;
@@ -59,8 +59,8 @@ module FIR_LPF
 				SR20 <= SR19;	SR21 <= SR20;	SR22 <= SR21;	SR23 <= SR22;
 				SR24 <= SR23;	SR25 <= SR24;	SR26 <= SR25;	SR27 <= SR26;
 				SR28 <= SR27;	SR29 <= SR28;	SR30 <= SR29;	SR31 <= SR30;
-			end
-        end 
+        	end 
+		end
     end
 
     /**********************************/
@@ -74,17 +74,15 @@ module FIR_LPF
 			SM08 <= 0;	SM09 <= 0;	SM10 <= 0;	SM11 <= 0;
 			SM12 <= 0;	SM13 <= 0;	SM14 <= 0;	SM15 <= 0;
         end
-        else if (en) begin
-			if (pl0 & ~pl1) begin
-				SM00 <= SR00 + SR31;	SM01 <= SR01 + SR30;	
-				SM02 <= SR02 + SR29;	SM03 <= SR03 + SR28;	
-				SM04 <= SR04 + SR27;	SM05 <= SR05 + SR26;	
-				SM06 <= SR06 + SR25;	SM07 <= SR07 + SR24;	
-				SM08 <= SR08 + SR23;	SM09 <= SR09 + SR22;	
-				SM10 <= SR10 + SR21;	SM11 <= SR11 + SR20;
-				SM12 <= SR12 + SR19;	SM13 <= SR13 + SR18;
-				SM14 <= SR14 + SR17;	SM15 <= SR15 + SR16;
-			end
+        else if (pl0 & ~pl1) begin
+            SM00 <= SR00 + SR31;	SM01 <= SR01 + SR30;	
+			SM02 <= SR02 + SR29;	SM03 <= SR03 + SR28;	
+			SM04 <= SR04 + SR27;	SM05 <= SR05 + SR26;	
+			SM06 <= SR06 + SR25;	SM07 <= SR07 + SR24;	
+			SM08 <= SR08 + SR23;	SM09 <= SR09 + SR22;	
+			SM10 <= SR10 + SR21;	SM11 <= SR11 + SR20;
+			SM12 <= SR12 + SR19;	SM13 <= SR13 + SR18;
+			SM14 <= SR14 + SR17;	SM15 <= SR15 + SR16;
         end
     end
 
@@ -99,17 +97,15 @@ module FIR_LPF
 			CM08 <= 0;	CM09 <= 0;	CM10 <= 0;	CM11 <= 0;
 			CM12 <= 0;	CM13 <= 0;	CM14 <= 0;	CM15 <= 0;
         end
-        else if (en) begin  
-			if (pl0 & ~pl1) begin
-				CM00 <= SM00 * CF00;	CM01 <= SM01 * CF01;	
-				CM02 <= SM02 * CF02;	CM03 <= SM03 * CF03;	
-				CM04 <= SM04 * CF04;	CM05 <= SM05 * CF05;	
-				CM06 <= SM06 * CF06;	CM07 <= SM07 * CF07;	
-				CM08 <= SM08 * CF08;	CM09 <= SM09 * CF09;	
-				CM10 <= SM10 * CF10;	CM11 <= SM11 * CF11;
-				CM12 <= SM12 * CF12;	CM13 <= SM13 * CF13;
-				CM14 <= SM14 * CF14;	CM15 <= SM15 * CF15;
-			end
+        else if (pl0 & ~pl1) begin   
+            CM00 <= SM00 * CF00;	CM01 <= SM01 * CF01;	
+			CM02 <= SM02 * CF02;	CM03 <= SM03 * CF03;	
+			CM04 <= SM04 * CF04;	CM05 <= SM05 * CF05;	
+			CM06 <= SM06 * CF06;	CM07 <= SM07 * CF07;	
+			CM08 <= SM08 * CF08;	CM09 <= SM09 * CF09;	
+			CM10 <= SM10 * CF10;	CM11 <= SM11 * CF11;
+			CM12 <= SM12 * CF12;	CM13 <= SM13 * CF13;
+			CM14 <= SM14 * CF14;	CM15 <= SM15 * CF15;
         end
     end
 
@@ -121,13 +117,11 @@ module FIR_LPF
 		if (!rst) begin
 			SUM <= 29'd0;
 		end
-		else if (en) begin
-			if (pl0 & ~pl1) begin
-				SUM <=  CM00 + CM01 + CM02 + CM03 + 
-						CM04 + CM05 + CM06 + CM07 + 
-						CM08 + CM09 + CM10 + CM11 + 
-						CM12 + CM13 + CM14 + CM15 ;
-			end
+		else if (pl0 & ~pl1) begin 
+			SUM <=  CM00 + CM01 + CM02 + CM03 + 
+					CM04 + CM05 + CM06 + CM07 + 
+					CM08 + CM09 + CM10 + CM11 + 
+					CM12 + CM13 + CM14 + CM15 ;
 		end
 	end
 
@@ -140,15 +134,13 @@ module FIR_LPF
 		if (!rst) begin
 			ESUM <= 12'd0;
 		end
-		else if (en) begin 
-			if (pl0 & ~pl1) begin
-				if ((SUM[28:26] == 0) | (SUM[28:26] == 7))
-					ESUM <= SUM[26:15];
-				else if (SUM[28] == 0)
-					ESUM <= 2047;
-				else
-					ESUM <= -2048;
-			end
+		else if (pl0 & ~pl1) begin 
+			if ((SUM[28:26] == 0) | (SUM[28:26] == 7))
+				ESUM <= SUM[26:15];
+			else if (SUM[28] == 0)
+				ESUM <= 2047;
+			else
+				ESUM <= -2048;
 		end
 	end
 

@@ -4,9 +4,11 @@ module tb_FIR_LPF;
     localparam SIM_TIME = 24000000;     // Simulation time
 
     reg                     clk;        // clock
+    reg                     clk_1;
     reg	                    rst;        // asynchonus reset
     reg                     s_clk;      // func_gen sampling clock
-    reg                     f_s;        // Low pass filter sampling clock
+    reg                     f_s;
+    wire                    f_s_1;        // Low pass filter sampling clock
 
     reg             [1:0]   sel;        // Select wave_a or wave_b or sum_wave
     reg             [18:0]  f_set_a;    // wave_a freq
@@ -92,14 +94,23 @@ module tb_FIR_LPF;
         //INPUT 
         .clk(clk)               ,
         .rst(rst)               ,
-        .f_s(f_s)               ,
+        .f_s(f_s_1)               ,
         .din(di_fir)            ,
 
         // OUTPUT
         .dout(do_fir_lpf)
     );
     
+    clk_20k_gen clk_20k_gen
+    (
+        .clk(clk_1)               ,
+        .rst(rst)               ,
+
+        .clk_20k(f_s_1)       
+    );
+
     // Clock generate
+    always #50      clk_1 = ~clk_1;
     always #250     clk = ~clk;           // 100MHz
     always #500     s_clk = ~s_clk;       // 1MHz
     always #25000   f_s = ~f_s;             // 20kHz
@@ -108,6 +119,7 @@ module tb_FIR_LPF;
     initial begin
         rst = 1'b1;
         clk = 1'b0;
+        clk_1 = 1'b0;
         s_clk = 1'b0;
         f_s = 1'b0;
         

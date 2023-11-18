@@ -117,10 +117,10 @@ module tb_FIR_HPF;
         f_set_c = 19'd2000;
         w_set_a = 1'b0;         // sin
         w_set_b = 1'b0;         // sin
-        w_set_c = 1'b1;         // cos
+        w_set_c = 1'b0;         // cos
         a_set_a = 3'd5;         // 2V   
-        a_set_b = 3'd4;         // 1V
-        a_set_c = 3'd3;         // 2V
+        a_set_b = 3'd5;         // 1V
+        a_set_c = 3'd5;         // 2V
         sel = 2'd0;
 
         #10

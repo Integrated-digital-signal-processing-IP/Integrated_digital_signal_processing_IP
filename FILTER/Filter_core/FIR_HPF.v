@@ -27,8 +27,18 @@ module FIR_HPF
     
     reg     signed  [28:0]  SUM;            // 29bit total sum result   
     reg     signed  [11:0]  ESUM;           // Extract 12bit SUM from 29bit SUM    
-    wire    signed  [11:0]  SUM_ADJ;        // Adjusted SUM
+    //wire    signed  [11:0]  SUM_ADJ;        // Adjusted SUM
     wire    signed  [10:0]  LSUM;           // Lower bit of 29bit SUM[11:1]  
+
+	wire 	signed [24:0]	SUM_A;
+	wire 	signed [18:0]	SUM_B;
+	wire 	signed [16:0]	SUM_C;
+	wire 	signed [8:0]	SUM_D;
+	wire 	signed [25:0]	SUM_E;
+	wire 	signed [21:0]	SUM_F;
+	wire 	signed [28:0]	SUM_Adj;
+
+	wire 	signed [6:0]	SUM_G;
 
     reg     signed  [11:0]  dout_r;
 
@@ -74,17 +84,15 @@ module FIR_HPF
 			SM08 <= 0;	SM09 <= 0;	SM10 <= 0;	SM11 <= 0;
 			SM12 <= 0;	SM13 <= 0;	SM14 <= 0;	SM15 <= 0;
         end
-        else if (en) begin
-			if (pl0 & ~pl1) begin
-				SM00 <= SR00 + SR30;	SM01 <= SR01 + SR29;	
-				SM02 <= SR02 + SR28;	SM03 <= SR03 + SR27;	
-				SM04 <= SR04 + SR26;	SM05 <= SR05 + SR25;	
-				SM06 <= SR06 + SR24;	SM07 <= SR07 + SR23;	
-				SM08 <= SR08 + SR25;	SM09 <= SR09 + SR21;	
-				SM10 <= SR10 + SR20;	SM11 <= SR11 + SR19;
-				SM12 <= SR12 + SR18;	SM13 <= SR13 + SR17;
-				SM14 <= SR14 + SR16;	SM15 <= SR15;
-			end
+        else if (pl0 & ~pl1) begin
+            SM00 <= SR00 + SR30;	SM01 <= SR01 + SR29;	
+			SM02 <= SR02 + SR28;	SM03 <= SR03 + SR27;	
+			SM04 <= SR04 + SR26;	SM05 <= SR05 + SR25;	
+			SM06 <= SR06 + SR24;	SM07 <= SR07 + SR23;	
+			SM08 <= SR08 + SR25;	SM09 <= SR09 + SR21;	
+			SM10 <= SR10 + SR20;	SM11 <= SR11 + SR19;
+			SM12 <= SR12 + SR18;	SM13 <= SR13 + SR17;
+			SM14 <= SR14 + SR16;	SM15 <= SR15;
         end
     end
 
@@ -99,17 +107,15 @@ module FIR_HPF
 			CM08 <= 0;	CM09 <= 0;	CM10 <= 0;	CM11 <= 0;
 			CM12 <= 0;	CM13 <= 0;	CM14 <= 0;	CM15 <= 0;
         end
-        else if (en) begin
-			if (pl0 & ~pl1) begin
-				CM00 <= SM00 * CF00;	CM01 <= SM01 * CF01;	
-				CM02 <= SM02 * CF02;	CM03 <= SM03 * CF03;	
-				CM04 <= SM04 * CF04;	CM05 <= SM05 * CF05;	
-				CM06 <= SM06 * CF06;	CM07 <= SM07 * CF07;	
-				CM08 <= SM08 * CF08;	CM09 <= SM09 * CF09;	
-				CM10 <= SM10 * CF10;	CM11 <= SM11 * CF11;
-				CM12 <= SM12 * CF12;	CM13 <= SM13 * CF13;
-				CM14 <= SM14 * CF14;	CM15 <= SM15 * CF15;
-			end
+        else if (pl0 & ~pl1) begin   
+            CM00 <= SM00 * CF00;	CM01 <= SM01 * CF01;	
+			CM02 <= SM02 * CF02;	CM03 <= SM03 * CF03;	
+			CM04 <= SM04 * CF04;	CM05 <= SM05 * CF05;	
+			CM06 <= SM06 * CF06;	CM07 <= SM07 * CF07;	
+			CM08 <= SM08 * CF08;	CM09 <= SM09 * CF09;	
+			CM10 <= SM10 * CF10;	CM11 <= SM11 * CF11;
+			CM12 <= SM12 * CF12;	CM13 <= SM13 * CF13;
+			CM14 <= SM14 * CF14;	CM15 <= SM15 * CF15;
         end
     end
 
@@ -121,13 +127,11 @@ module FIR_HPF
 		if (!rst) begin
 			SUM <= 29'd0;
 		end
-		else if (en) begin
-			if (pl0 & ~pl1) begin
-				SUM <=  CM00 + CM01 + CM02 + CM03 + 
-						CM04 + CM05 + CM06 + CM07 + 
-						CM08 + CM09 + CM10 + CM11 + 
-						CM12 + CM13 + CM14 + CM15 ;
-			end
+		else if (pl0 & ~pl1) begin 
+			SUM <=  CM00 + CM01 + CM02 + CM03 + 
+					CM04 + CM05 + CM06 + CM07 + 
+					CM08 + CM09 + CM10 + CM11 + 
+					CM12 + CM13 + CM14 + CM15 ;
 		end
 	end
 
@@ -136,35 +140,32 @@ module FIR_HPF
     /*          Output adjust         */
     /**********************************/
 
-    always @ (posedge clk, negedge rst) begin
-		if (!rst) begin
-			ESUM <= 12'd0;
-		end
-		else if (en) begin
-			if (pl0 & ~pl1) begin
-				if ((SUM[28:26] == 0) | (SUM[28:26] == 7))
-					ESUM <= SUM[26:15];
-				else if (SUM[28] == 0)
-					ESUM <= 2047;
-				else
-					ESUM <= -2048;
-			end
-		end
-	end
-
-    assign LSUM = ESUM[11:1];
-    assign SUM_ADJ = ESUM + LSUM;
-
-    /**********************************/
-    /*           Final output         */
-    /**********************************/
-
-    always @ (posedge clk, negedge rst) begin
+	always @ (posedge clk, negedge rst) begin
 		if (!rst)
-			dout_r <= 12'd0;
-		else if (pl0 & ~pl1) 
-			dout_r <= SUM_ADJ;
+			dout_r <= 0;
+		else if (pl0 & ~pl1) begin
+			if ((SUM_G == 0) | (SUM_G == -1))
+				dout_r <= SUM_Adj[22:11];
+			else if (SUM_G[6] == 0)
+				dout_r <= 2047;
+			else
+				dout_r <= -2048;
+		end
 	end
+
+	assign SUM_G = SUM_Adj[28:22];
+
+	/* Adjust Output Level */
+
+	assign SUM_Adj = (SUM + SUM_A + SUM_B + SUM_C + SUM_D) - (SUM_E + SUM_F);
+				
+	assign SUM_A = SUM[28:4];
+	assign SUM_B = SUM[28:10];
+	assign SUM_C = SUM[28:12];
+	assign SUM_D = SUM[28:20];
+	assign SUM_E = SUM[28:3];
+	assign SUM_F = SUM[28:7];
+
 
     assign dout = dout_r;
     

@@ -1,0 +1,88 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sun Nov 12 11:01:20 2023
+[*]
+[dumpfile] "/home/hyundo/Github/Signal_processing_accelerator/FILTER/Filter_core/Filter_core.vcd"
+[dumpfile_mtime] "Sun Nov 12 11:00:51 2023"
+[dumpfile_size] 10864716
+[savefile] "/home/hyundo/Github/Signal_processing_accelerator/FILTER/Filter_core/filter_core.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*-32.064125 7400000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_Filter_core.
+[treeopen] tb_Filter_core.FILTER_CORE.
+[sst_width] 214
+[signals_width] 197
+[sst_expanded] 1
+[sst_vpaned_height] 222
+@28
+tb_Filter_core.clk
+tb_Filter_core.fun_gen_f_s
+tb_Filter_core.fir_f_s
+tb_Filter_core.iir_f_s
+tb_Filter_core.rst
+@200
+-
+@24
+tb_Filter_core.f_set[18:0]
+tb_Filter_core.a_set[2:0]
+@28
+tb_Filter_core.mode_sel[2:0]
+tb_Filter_core.w_set
+@200
+-
+@10420
+tb_Filter_core.FILTER_CORE.fir_wave_i[11:0]
+@20000
+-
+-
+@10420
+tb_Filter_core.FILTER_CORE.iir_wave_i[15:0]
+@20000
+-
+@200
+-
+@10420
+tb_Filter_core.FILTER_CORE.lpf_wave_o[11:0]
+@20000
+-
+-
+@10420
+tb_Filter_core.FILTER_CORE.hpf_wave_o[11:0]
+@20000
+-
+-
+@c10420
+tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+@28
+(0)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(1)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(2)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(3)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(4)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(5)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(6)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(7)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(8)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(9)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(10)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(11)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(12)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(13)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(14)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+(15)tb_Filter_core.FILTER_CORE.bpf_wave_o[15:0]
+@1401200
+-group_end
+@20000
+-
+-
+@24
+tb_Filter_core.FILTER_CORE.mode_sel[2:0]
+@10421
+tb_Filter_core.FILTER_CORE.dout[15:0]
+@20000
+-
+-
+[pattern_trace] 1
+[pattern_trace] 0
